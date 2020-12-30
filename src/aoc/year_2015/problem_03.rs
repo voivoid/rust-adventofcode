@@ -1,0 +1,84 @@
+use std::collections::BTreeSet;
+
+#[derive(Clone, Copy)]
+struct Step(isize, isize);
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+struct Pos(isize, isize);
+
+fn dir_to_step(c: u8) -> Step {
+    match c {
+        b'<' => Step(-1, 0),
+        b'>' => Step(1, 0),
+        b'^' => Step(0, -1),
+        b'v' => Step(0, 1),
+        _ => panic!("unexpected move"),
+    }
+}
+
+fn apply_step(pos: Pos, step: Step) -> Pos {
+    Pos(pos.0 + step.0, pos.1 + step.1)
+}
+
+fn set_insert<T: Ord>(mut btree: BTreeSet<T>, item: T) -> BTreeSet<T> {
+    btree.insert(item);
+    btree
+}
+
+fn get_visited_locations(dirs: impl Iterator<Item = u8>) -> BTreeSet<Pos> {
+    let start_pos = Pos(0, 0);
+    let visited_locations: BTreeSet<Pos> = dirs
+        .map(dir_to_step)
+        .scan(start_pos, |current_pos, step| {
+            *current_pos = apply_step(*current_pos, step);
+            Some(*current_pos)
+        })
+        .collect();
+
+    set_insert(visited_locations, start_pos)
+}
+
+pub fn solve_a(input: impl std::io::BufRead) -> usize {
+    let results = input.lines().map(|l| {
+        let line = l.unwrap();
+        get_visited_locations(line.as_bytes().iter().copied()).len()
+    });
+
+    results.sum()
+}
+
+pub fn solve_b(input: impl std::io::BufRead) -> usize {
+    let results = input.lines().map(|l| {
+        let line = l.unwrap();
+        let (santa, robot): (Vec<_>, Vec<_>) = line
+            .as_bytes()
+            .iter()
+            .copied()
+            .enumerate()
+            .partition(|(i, _)| i % 2 == 0);
+
+        let santa_visited = get_visited_locations(santa.iter().map(|(_, d)| d).copied());
+        let robot_visited = get_visited_locations(robot.iter().map(|(_, d)| d).copied());
+
+        santa_visited.union(&robot_visited).count()
+    });
+
+    results.sum()
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn check_a() {
+        assert_eq!(2, super::solve_a(">".as_bytes()));
+        assert_eq!(4, super::solve_a("^>v<".as_bytes()));
+        assert_eq!(2, super::solve_a("^v^v^v^v^v".as_bytes()));
+    }
+
+    #[test]
+    fn check_b() {
+        assert_eq!(3, super::solve_b("^v".as_bytes()));
+        assert_eq!(3, super::solve_b("^>v<".as_bytes()));
+        assert_eq!(11, super::solve_b("^v^v^v^v^v".as_bytes()));
+    }
+}
