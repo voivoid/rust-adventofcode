@@ -26,20 +26,36 @@ fn test_problem(problem: &str, input_file: &str, expected_result: &str) {
     assert_eq!(format!("{}\n", expected_result), output_str);
 }
 
+fn test_problems(input_file: &str, expected_result_1: &str, expected_result_2: &str) {
+    let problem = input_file.replace("/", "_");
+    let problem_a = format!("{}_a", problem);
+    let problem_b = format!("{}_b", problem);
+
+    test_problem(problem_a.as_str(), input_file, expected_result_1);
+    test_problem(problem_b.as_str(), input_file, expected_result_2);
+}
+
 #[test]
 fn test_2015_01() {
-    test_problem("2015_01_1", "2015/01", "280");
-    test_problem("2015_01_2", "2015/01", "1797");
+    test_problems("2015/01", "280", "1797");
 }
 
 #[test]
 fn test_2015_02() {
-    test_problem("2015_02_1", "2015/02", "1586300");
-    test_problem("2015_02_2", "2015/02", "3737498");
+    test_problems("2015/02", "1586300", "3737498");
 }
 
 #[test]
 fn test_2015_03() {
-    test_problem("2015_03_1", "2015/03", "2592");
-    test_problem("2015_03_2", "2015/03", "2360");
+    test_problems("2015/03", "2592", "2360");
+}
+
+#[test]
+fn test_2015_05() {
+    test_problems("2015/05", "255", "55");
+}
+
+#[test]
+fn test_2020_01() {
+    test_problems("2020/01", "744475", "70276940");
 }

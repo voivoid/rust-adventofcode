@@ -1,4 +1,4 @@
-use u64 as DimT;
+type DimT = u64;
 struct Dims(DimT, DimT, DimT);
 
 fn str_to_int(input: &str) -> Result<DimT, std::num::ParseIntError> {
@@ -45,8 +45,8 @@ fn calc_area_b(Dims(l, w, h): Dims) -> DimT {
 fn solve(input: impl std::io::BufRead, calc_area: fn(Dims) -> DimT) -> DimT {
     input
         .lines()
-        .map(|l| {
-            let line = l.unwrap();
+        .map(|line| {
+            let line = line.unwrap();
             let (_, dims) = parse_dims(&line).unwrap();
             calc_area(dims)
         })

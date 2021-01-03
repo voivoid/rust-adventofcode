@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+type PosSet = std::collections::BTreeSet<Pos>;
 
 #[derive(Clone, Copy)]
 struct Step(isize, isize);
@@ -20,14 +20,14 @@ fn apply_step(pos: Pos, step: Step) -> Pos {
     Pos(pos.0 + step.0, pos.1 + step.1)
 }
 
-fn set_insert<T: Ord>(mut btree: BTreeSet<T>, item: T) -> BTreeSet<T> {
-    btree.insert(item);
+fn insert_pos(mut btree: PosSet, pos: Pos) -> PosSet {
+    btree.insert(pos);
     btree
 }
 
-fn get_visited_locations(dirs: impl Iterator<Item = u8>) -> BTreeSet<Pos> {
+fn get_visited_locations(dirs: impl Iterator<Item = u8>) -> PosSet {
     let start_pos = Pos(0, 0);
-    let visited_locations: BTreeSet<Pos> = dirs
+    let visited_locations: PosSet = dirs
         .map(dir_to_step)
         .scan(start_pos, |current_pos, step| {
             *current_pos = apply_step(*current_pos, step);
@@ -35,12 +35,12 @@ fn get_visited_locations(dirs: impl Iterator<Item = u8>) -> BTreeSet<Pos> {
         })
         .collect();
 
-    set_insert(visited_locations, start_pos)
+    insert_pos(visited_locations, start_pos)
 }
 
 pub fn solve_a(input: impl std::io::BufRead) -> usize {
-    let results = input.lines().map(|l| {
-        let line = l.unwrap();
+    let results = input.lines().map(|line| {
+        let line = line.unwrap();
         get_visited_locations(line.as_bytes().iter().copied()).len()
     });
 
@@ -48,8 +48,8 @@ pub fn solve_a(input: impl std::io::BufRead) -> usize {
 }
 
 pub fn solve_b(input: impl std::io::BufRead) -> usize {
-    let results = input.lines().map(|l| {
-        let line = l.unwrap();
+    let results = input.lines().map(|line| {
+        let line = line.unwrap();
         let (santa, robot): (Vec<_>, Vec<_>) = line
             .as_bytes()
             .iter()
