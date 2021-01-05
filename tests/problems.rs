@@ -23,7 +23,7 @@ fn test_problem(problem: &str, input_file: &str, expected_result: &str) {
 
     assert!(output.status.success());
     assert!(output.stderr.is_empty());
-    assert_eq!(format!("{}\n", expected_result), output_str);
+    assert_eq!(expected_result, output_str.trim());
 }
 
 fn test_problems(input_file: &str, expected_result_1: &str, expected_result_2: &str) {
@@ -53,6 +53,11 @@ fn test_2015_03() {
 #[test]
 fn test_2015_05() {
     test_problems("2015/05", "255", "55");
+}
+
+#[test]
+fn test_2015_06() {
+    test_problems("2015/06", "569999", "17836115");
 }
 
 #[test]

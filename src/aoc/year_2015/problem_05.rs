@@ -74,49 +74,48 @@ pub fn solve_b(input: impl std::io::BufRead) -> usize {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
 
     #[test]
     fn check_impl() {
-        assert!(super::has_three_vowels(b"aei"));
-        assert!(super::has_three_vowels(b"xazegov"));
-        assert!(super::has_three_vowels(b"aeiouaeiouaeiou"));
-        assert!(!super::has_three_vowels(b"aci"));
+        assert!(has_three_vowels(b"aei"));
+        assert!(has_three_vowels(b"xazegov"));
+        assert!(has_three_vowels(b"aeiouaeiouaeiou"));
+        assert!(!has_three_vowels(b"aci"));
 
-        assert!(super::has_letter_twice_in_a_row(b"xx"));
-        assert!(super::has_letter_twice_in_a_row(b"abcdde"));
-        assert!(super::has_letter_twice_in_a_row(b"aabbccdd"));
-        assert!(!super::has_letter_twice_in_a_row(b"abc"));
+        assert!(has_letter_twice_in_a_row(b"xx"));
+        assert!(has_letter_twice_in_a_row(b"abcdde"));
+        assert!(has_letter_twice_in_a_row(b"aabbccdd"));
+        assert!(!has_letter_twice_in_a_row(b"abc"));
 
-        assert!(!super::has_no_naughty_strings(b"ab"));
-        assert!(!super::has_no_naughty_strings(b"cd"));
-        assert!(super::has_no_naughty_strings(b"ef"));
+        assert!(!has_no_naughty_strings(b"ab"));
+        assert!(!has_no_naughty_strings(b"cd"));
+        assert!(has_no_naughty_strings(b"ef"));
 
-        assert!(super::has_double_letter_with_a_letter_between(b"xyx"));
-        assert!(super::has_double_letter_with_a_letter_between(
-            b"abcdefeghi"
-        ));
-        assert!(super::has_double_letter_with_a_letter_between(b"aaa"));
-        assert!(!super::has_double_letter_with_a_letter_between(b"aab"));
+        assert!(has_double_letter_with_a_letter_between(b"xyx"));
+        assert!(has_double_letter_with_a_letter_between(b"abcdefeghi"));
+        assert!(has_double_letter_with_a_letter_between(b"aaa"));
+        assert!(!has_double_letter_with_a_letter_between(b"aab"));
 
-        assert!(super::has_pair_of_letters_twice(b"xyxy"));
-        assert!(super::has_pair_of_letters_twice(b"aabcdefgaa"));
-        assert!(!super::has_pair_of_letters_twice(b"aaa"));
+        assert!(has_pair_of_letters_twice(b"xyxy"));
+        assert!(has_pair_of_letters_twice(b"aabcdefgaa"));
+        assert!(!has_pair_of_letters_twice(b"aaa"));
     }
 
     #[test]
     fn check_a() {
-        assert_eq!(1, super::solve_a("ugknbfddgicrmopn".as_bytes()));
-        assert_eq!(1, super::solve_a("aaa".as_bytes()));
-        assert_eq!(0, super::solve_a("jchzalrnumimnmhp".as_bytes()));
-        assert_eq!(0, super::solve_a("haegwjzuvuyypxyu".as_bytes()));
-        assert_eq!(0, super::solve_a("dvszwmarrgswjxmb".as_bytes()));
+        assert_eq!(1, solve_a("ugknbfddgicrmopn".as_bytes()));
+        assert_eq!(1, solve_a("aaa".as_bytes()));
+        assert_eq!(0, solve_a("jchzalrnumimnmhp".as_bytes()));
+        assert_eq!(0, solve_a("haegwjzuvuyypxyu".as_bytes()));
+        assert_eq!(0, solve_a("dvszwmarrgswjxmb".as_bytes()));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(1, super::solve_b("qjhvhtzxzqqjkmpb".as_bytes()));
-        assert_eq!(1, super::solve_b("xxyxx".as_bytes()));
-        assert_eq!(0, super::solve_b("uurcxstgmygtbstg".as_bytes()));
-        assert_eq!(0, super::solve_b("ieodomkazucvgmuy".as_bytes()));
+        assert_eq!(1, solve_b("qjhvhtzxzqqjkmpb".as_bytes()));
+        assert_eq!(1, solve_b("xxyxx".as_bytes()));
+        assert_eq!(0, solve_b("uurcxstgmygtbstg".as_bytes()));
+        assert_eq!(0, solve_b("ieodomkazucvgmuy".as_bytes()));
     }
 }

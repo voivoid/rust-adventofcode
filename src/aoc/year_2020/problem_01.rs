@@ -59,7 +59,7 @@ pub fn solve_b(input: impl std::io::BufRead) -> Entry {
 
 #[cfg(test)]
 mod tests {
-    static TEST_INPUT: &str = "1721\n979\n366\n299\n675\n1456";
+    const TEST_INPUT: &str = "1721\n979\n366\n299\n675\n1456";
 
     #[test]
     fn check_a() {

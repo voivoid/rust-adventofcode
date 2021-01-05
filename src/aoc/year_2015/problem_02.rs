@@ -1,27 +1,26 @@
 type DimT = u64;
+
+#[derive(Debug, PartialEq, Eq)]
 struct Dims(DimT, DimT, DimT);
 
-fn str_to_int(input: &str) -> Result<DimT, std::num::ParseIntError> {
-    DimT::from_str_radix(input, 10)
-}
+use crate::aoc::utils::parsing::parse_decimal;
+use nom::character::complete::char;
 
-fn parse_dim(input: &str) -> nom::IResult<&str, DimT> {
-    nom::combinator::map_res(
-        nom::bytes::complete::take_while(|c: char| c.is_digit(10)),
-        str_to_int,
-    )(input)
-}
-
-fn parse_dims(input: &str) -> nom::IResult<&str, Dims> {
-    use nom::bytes::complete::tag;
-
-    let (input, length) = parse_dim(input)?;
-    let (input, _) = tag("x")(input)?;
-    let (input, width) = parse_dim(input)?;
-    let (input, _) = tag("x")(input)?;
-    let (input, height) = parse_dim(input)?;
+fn parse_dims_impl(input: &str) -> nom::IResult<&str, Dims> {
+    let (input, length) = parse_decimal::<DimT>(input)?;
+    let (input, _) = char('x')(input)?;
+    let (input, width) = parse_decimal::<DimT>(input)?;
+    let (input, _) = char('x')(input)?;
+    let (input, height) = parse_decimal::<DimT>(input)?;
 
     Ok((input, Dims(length, width, height)))
+}
+
+fn parse_dims(input: &str) -> Dims {
+    match nom::combinator::all_consuming(parse_dims_impl)(input) {
+        Ok((_, dims)) => dims,
+        Err(e) => panic!(format!("Failed to parse dims: {:?}", e)),
+    }
 }
 
 fn calc_area_a(Dims(l, w, h): Dims) -> DimT {
@@ -47,7 +46,7 @@ fn solve(input: impl std::io::BufRead, calc_area: fn(Dims) -> DimT) -> DimT {
         .lines()
         .map(|line| {
             let line = line.unwrap();
-            let (_, dims) = parse_dims(&line).unwrap();
+            let dims = parse_dims(&line);
             calc_area(dims)
         })
         .sum()
@@ -63,15 +62,22 @@ pub fn solve_b(input: impl std::io::BufRead) -> DimT {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
+    #[test]
+    fn check_parsing() {
+        assert_eq!(Dims(1, 22, 333), parse_dims("1x22x333"));
+    }
+
     #[test]
     fn check_a() {
-        assert_eq!(58, super::solve_a("2x3x4".as_bytes()));
-        assert_eq!(43, super::solve_a("1x1x10".as_bytes()));
+        assert_eq!(58, solve_a("2x3x4".as_bytes()));
+        assert_eq!(43, solve_a("1x1x10".as_bytes()));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(34, super::solve_b("2x3x4".as_bytes()));
-        assert_eq!(14, super::solve_b("1x1x10".as_bytes()));
+        assert_eq!(34, solve_b("2x3x4".as_bytes()));
+        assert_eq!(14, solve_b("1x1x10".as_bytes()));
     }
 }

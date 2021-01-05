@@ -68,17 +68,19 @@ pub fn solve_b(input: impl std::io::BufRead) -> usize {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
     fn check_a() {
-        assert_eq!(2, super::solve_a(">".as_bytes()));
-        assert_eq!(4, super::solve_a("^>v<".as_bytes()));
-        assert_eq!(2, super::solve_a("^v^v^v^v^v".as_bytes()));
+        assert_eq!(2, solve_a(">".as_bytes()));
+        assert_eq!(4, solve_a("^>v<".as_bytes()));
+        assert_eq!(2, solve_a("^v^v^v^v^v".as_bytes()));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(3, super::solve_b("^v".as_bytes()));
-        assert_eq!(3, super::solve_b("^>v<".as_bytes()));
-        assert_eq!(11, super::solve_b("^v^v^v^v^v".as_bytes()));
+        assert_eq!(3, solve_b("^v".as_bytes()));
+        assert_eq!(3, solve_b("^>v<".as_bytes()));
+        assert_eq!(11, solve_b("^v^v^v^v^v".as_bytes()));
     }
 }

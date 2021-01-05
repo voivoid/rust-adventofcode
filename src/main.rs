@@ -16,6 +16,8 @@ fn main() {
         "2015_03_b" => year_2015::problem_03::solve_b(stdin).to_string(),
         "2015_05_a" => year_2015::problem_05::solve_a(stdin).to_string(),
         "2015_05_b" => year_2015::problem_05::solve_b(stdin).to_string(),
+        "2015_06_a" => year_2015::problem_06::solve_a(stdin).to_string(),
+        "2015_06_b" => year_2015::problem_06::solve_b(stdin).to_string(),
 
         "2020_01_a" => year_2020::problem_01::solve_a(stdin).to_string(),
         "2020_01_b" => year_2020::problem_01::solve_b(stdin).to_string(),

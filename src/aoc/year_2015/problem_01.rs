@@ -24,22 +24,24 @@ pub fn solve_b(input: impl std::io::BufRead) -> usize {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
     fn check_a() {
-        assert_eq!(0, super::solve_a("(())".as_bytes()));
-        assert_eq!(0, super::solve_a("()()".as_bytes()));
-        assert_eq!(3, super::solve_a("(((".as_bytes()));
-        assert_eq!(3, super::solve_a("(()(()(".as_bytes()));
-        assert_eq!(3, super::solve_a("))(((((".as_bytes()));
-        assert_eq!(-1, super::solve_a("())".as_bytes()));
-        assert_eq!(-1, super::solve_a("))(".as_bytes()));
-        assert_eq!(-3, super::solve_a(")))".as_bytes()));
-        assert_eq!(-3, super::solve_a(")())())".as_bytes()));
+        assert_eq!(0, solve_a("(())".as_bytes()));
+        assert_eq!(0, solve_a("()()".as_bytes()));
+        assert_eq!(3, solve_a("(((".as_bytes()));
+        assert_eq!(3, solve_a("(()(()(".as_bytes()));
+        assert_eq!(3, solve_a("))(((((".as_bytes()));
+        assert_eq!(-1, solve_a("())".as_bytes()));
+        assert_eq!(-1, solve_a("))(".as_bytes()));
+        assert_eq!(-3, solve_a(")))".as_bytes()));
+        assert_eq!(-3, solve_a(")())())".as_bytes()));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(1, super::solve_b(")".as_bytes()));
-        assert_eq!(5, super::solve_b("()())".as_bytes()));
+        assert_eq!(1, solve_b(")".as_bytes()));
+        assert_eq!(5, solve_b("()())".as_bytes()));
     }
 }
