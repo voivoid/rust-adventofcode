@@ -1,4 +1,4 @@
-fn direction_to_step(c: u8) -> i64 {
+fn direction_to_step(c: u8) -> isize {
     match c {
         b'(' => 1,
         b')' => -1,
@@ -6,7 +6,7 @@ fn direction_to_step(c: u8) -> i64 {
     }
 }
 
-pub fn solve_a(input: impl std::io::BufRead) -> i64 {
+pub fn solve_a(input: impl std::io::BufRead) -> isize {
     input.bytes().map(|c| direction_to_step(c.unwrap())).sum()
 }
 

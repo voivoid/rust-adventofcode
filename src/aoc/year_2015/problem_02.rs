@@ -1,10 +1,10 @@
+use crate::aoc::utils::parsing::parse_decimal;
+use nom::character::complete::char;
+
 type DimT = u64;
 
 #[derive(Debug, PartialEq, Eq)]
 struct Dims(DimT, DimT, DimT);
-
-use crate::aoc::utils::parsing::parse_decimal;
-use nom::character::complete::char;
 
 fn parse_dims_impl(input: &str) -> nom::IResult<&str, Dims> {
     let (input, length) = parse_decimal::<DimT>(input)?;

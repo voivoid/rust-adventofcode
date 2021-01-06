@@ -14,16 +14,14 @@ fn find_two_entries_with_the_sum(entries: &[Entry], sum: Entry) -> Option<(Entry
     let left = entries.first();
     let right = entries.last();
 
-    if let Some((l, r)) = left.zip(right) {
+    left.zip(right).and_then(|(&l, &r)| {
         use std::cmp::Ordering;
         match sum.cmp(&(l + r)) {
-            Ordering::Equal => Some((*l, *r)),
+            Ordering::Equal => Some((l, r)),
             Ordering::Greater => find_two_entries_with_the_sum(&entries[1..], sum),
             Ordering::Less => find_two_entries_with_the_sum(&entries[..entries.len() - 1], sum),
         }
-    } else {
-        None
-    }
+    })
 }
 
 fn find_three_entries_with_the_sum(entries: &[Entry], sum: Entry) -> Option<(Entry, Entry, Entry)> {

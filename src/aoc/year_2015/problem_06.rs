@@ -1,11 +1,13 @@
+use crate::aoc::utils::parsing::{parse_decimal, parse_ws};
+use nom::{bytes::complete::tag, character::complete::char, combinator::map, ToUsize};
+
 type Coord = usize;
 type Brigthness = u8;
 
 const GRID_SIDE: Coord = 1000;
 type Grid = Vec<Brigthness>;
 
-use crate::aoc::utils::parsing::{parse_decimal, parse_ws};
-use nom::{bytes::complete::tag, character::complete::char, combinator::map, ToUsize};
+type NomResult<'a, T> = nom::IResult<&'a str, T>;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Command {
@@ -23,7 +25,7 @@ struct Instruction {
     bottom: Coord,
 }
 
-fn parse_command(input: &str) -> nom::IResult<&str, Command> {
+fn parse_command(input: &str) -> NomResult<Command> {
     let on = map(tag("turn on"), |_| Command::On);
     let off = map(tag("turn off"), |_| Command::Off);
     let toggle = map(tag("toggle"), |_| Command::Toggle);
@@ -31,7 +33,7 @@ fn parse_command(input: &str) -> nom::IResult<&str, Command> {
     nom::branch::alt((on, off, toggle))(input)
 }
 
-fn parse_coords(input: &str) -> nom::IResult<&str, (Coord, Coord)> {
+fn parse_coords(input: &str) -> NomResult<(Coord, Coord)> {
     let (input, c1) = parse_decimal::<Coord>(input)?;
     let (input, _) = char(',')(input)?;
     let (input, c2) = parse_decimal::<Coord>(input)?;
@@ -39,7 +41,7 @@ fn parse_coords(input: &str) -> nom::IResult<&str, (Coord, Coord)> {
     Ok((input, (c1, c2)))
 }
 
-fn parse_instruction_impl(input: &str) -> nom::IResult<&str, Instruction> {
+fn parse_instruction_impl(input: &str) -> NomResult<Instruction> {
     let (input, cmd) = parse_command(input)?;
     let (input, coords1) = parse_ws(parse_coords)(input)?;
     let (input, _) = nom::bytes::complete::tag("through")(input)?;
@@ -100,7 +102,7 @@ fn apply_instruction(
     grid
 }
 
-fn make_initial_gird() -> Grid {
+fn make_initial_grid() -> Grid {
     let mut grid = std::vec::Vec::new();
     grid.resize(GRID_SIDE * GRID_SIDE, 0);
     grid
@@ -111,7 +113,7 @@ fn solve(input: impl std::io::BufRead, apply_cmd: fn(Brigthness, Command) -> Bri
         .lines()
         .map(|line| parse_instruction(line.unwrap().as_str()));
 
-    let final_grid = instructions.fold(make_initial_gird(), |grid, instruction| {
+    let final_grid = instructions.fold(make_initial_grid(), |grid, instruction| {
         apply_instruction(grid, instruction, apply_cmd)
     });
 
