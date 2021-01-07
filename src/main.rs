@@ -5,8 +5,8 @@ fn main() {
     let stdin = std::io::stdin();
     let stdin = stdin.lock();
 
-    use rust_aoc::aoc::year_2015;
-    use rust_aoc::aoc::year_2020;
+    use rust_aoc::year_2015;
+    use rust_aoc::year_2020;
     let result = match &problem[..] {
         "2015_01_a" => year_2015::problem_01::solve_a(stdin).to_string(),
         "2015_01_b" => year_2015::problem_01::solve_b(stdin).to_string(),

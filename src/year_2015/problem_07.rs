@@ -1,4 +1,4 @@
-use crate::aoc::utils::parsing::{parse_decimal, parse_ws};
+use crate::utils::parsing::{parse_decimal, parse_ws};
 use nom::{branch::alt, bytes::complete::tag, bytes::complete::take_while, combinator::map};
 
 type Signal = u16;

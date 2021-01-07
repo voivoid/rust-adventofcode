@@ -1,4 +1,4 @@
-use crate::aoc::utils::parsing::parse_decimal;
+use crate::utils::parsing::parse_decimal;
 use nom::character::complete::char;
 
 type DimT = u64;

@@ -1,4 +1,4 @@
-use crate::aoc::utils::parsing::{parse_decimal, parse_ws};
+use crate::utils::parsing::{parse_decimal, parse_ws};
 use nom::{bytes::complete::tag, character::complete::char, combinator::map, ToUsize};
 
 type Coord = usize;
