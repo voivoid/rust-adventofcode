@@ -15,10 +15,13 @@ pub fn solve_b(input: impl std::io::BufRead) -> usize {
         .bytes()
         .scan(0, |state, c| {
             *state = *state + direction_to_step(c.unwrap());
-            Some(*state)
+            if *state != -1 {
+                Some(*state)
+            } else {
+                None
+            }
         })
-        .position(|n| n == -1)
-        .expect("")
+        .count()
         + 1
 }
 

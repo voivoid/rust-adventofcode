@@ -1,5 +1,5 @@
-use crate::utils::parsing::{parse_decimal, parse_ws};
-use nom::{branch::alt, bytes::complete::tag, bytes::complete::take_while, combinator::map};
+use crate::utils::parsing::{parse_decimal, parse_str_alpha, parse_ws};
+use nom::{branch::alt, bytes::complete::tag, combinator::map};
 
 type Signal = u16;
 type WireId = String;
@@ -86,10 +86,7 @@ fn parse_wiremap(input: impl std::io::BufRead) -> WireMap {
 }
 
 fn parse_wire(input: &str) -> NomResult<WireId> {
-    map(
-        parse_ws(take_while(|c: char| c.is_alphabetic())),
-        |s: &str| s.to_string(),
-    )(input)
+    parse_str_alpha(input)
 }
 
 fn parse_signal(input: &str) -> NomResult<Value> {
@@ -138,15 +135,15 @@ fn parse_source(input: &str) -> NomResult<Source> {
     alt((parse_unary_gate, parse_binary_gate, parse_value_as_source))(input)
 }
 
-fn parse_instruction_impl(input: &str) -> NomResult<Instruction> {
-    let (input, source) = parse_source(input)?;
-    let (input, _) = parse_ws(tag("->"))(input)?;
-    let (input, wire) = parse_wire(input)?;
-
-    Ok((input, Instruction { source, wire }))
-}
-
 fn parse_instruction(input: &str) -> Instruction {
+    fn parse_instruction_impl(input: &str) -> NomResult<Instruction> {
+        let (input, source) = parse_source(input)?;
+        let (input, _) = parse_ws(tag("->"))(input)?;
+        let (input, wire) = parse_wire(input)?;
+
+        Ok((input, Instruction { source, wire }))
+    }
+
     match nom::combinator::all_consuming(parse_instruction_impl)(input) {
         Ok((_, instruction)) => instruction,
         Err(e) => panic!(format!("Failed to parse instructions: {:?}", e)),
@@ -206,8 +203,8 @@ mod tests {
         );
 
         matches::assert_matches!(
-            parse_instruction_impl("123 -> x"),
-            Ok(("", Instruction{ source: Source::Value(Value::Signal(123)), wire })) if wire == "x"
+            parse_instruction("123 -> x"),
+            Instruction{ source: Source::Value(Value::Signal(123)), wire } if wire == "x"
         );
     }
 

@@ -6,17 +6,17 @@ type DimT = u64;
 #[derive(Debug, PartialEq, Eq)]
 struct Dims(DimT, DimT, DimT);
 
-fn parse_dims_impl(input: &str) -> nom::IResult<&str, Dims> {
-    let (input, length) = parse_decimal::<DimT>(input)?;
-    let (input, _) = char('x')(input)?;
-    let (input, width) = parse_decimal::<DimT>(input)?;
-    let (input, _) = char('x')(input)?;
-    let (input, height) = parse_decimal::<DimT>(input)?;
-
-    Ok((input, Dims(length, width, height)))
-}
-
 fn parse_dims(input: &str) -> Dims {
+    fn parse_dims_impl(input: &str) -> nom::IResult<&str, Dims> {
+        let (input, length) = parse_decimal::<DimT>(input)?;
+        let (input, _) = char('x')(input)?;
+        let (input, width) = parse_decimal::<DimT>(input)?;
+        let (input, _) = char('x')(input)?;
+        let (input, height) = parse_decimal::<DimT>(input)?;
+
+        Ok((input, Dims(length, width, height)))
+    }
+
     match nom::combinator::all_consuming(parse_dims_impl)(input) {
         Ok((_, dims)) => dims,
         Err(e) => panic!(format!("Failed to parse dims: {:?}", e)),
@@ -45,8 +45,7 @@ fn solve(input: impl std::io::BufRead, calc_area: fn(Dims) -> DimT) -> DimT {
     input
         .lines()
         .map(|line| {
-            let line = line.unwrap();
-            let dims = parse_dims(&line);
+            let dims = parse_dims(&line.unwrap());
             calc_area(dims)
         })
         .sum()

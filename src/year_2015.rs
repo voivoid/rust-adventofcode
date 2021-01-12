@@ -5,3 +5,4 @@ pub mod problem_05;
 pub mod problem_06;
 pub mod problem_07;
 pub mod problem_08;
+pub mod problem_09;

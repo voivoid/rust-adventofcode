@@ -41,25 +41,25 @@ fn parse_coords(input: &str) -> NomResult<(Coord, Coord)> {
     Ok((input, (c1, c2)))
 }
 
-fn parse_instruction_impl(input: &str) -> NomResult<Instruction> {
-    let (input, cmd) = parse_command(input)?;
-    let (input, coords1) = parse_ws(parse_coords)(input)?;
-    let (input, _) = nom::bytes::complete::tag("through")(input)?;
-    let (input, coords2) = parse_ws(parse_coords)(input)?;
-
-    Ok((
-        input,
-        Instruction {
-            cmd: cmd,
-            left: coords1.0,
-            top: coords1.1,
-            right: coords2.0,
-            bottom: coords2.1,
-        },
-    ))
-}
-
 fn parse_instruction(input: &str) -> Instruction {
+    fn parse_instruction_impl(input: &str) -> NomResult<Instruction> {
+        let (input, cmd) = parse_command(input)?;
+        let (input, coords1) = parse_ws(parse_coords)(input)?;
+        let (input, _) = nom::bytes::complete::tag("through")(input)?;
+        let (input, coords2) = parse_ws(parse_coords)(input)?;
+
+        Ok((
+            input,
+            Instruction {
+                cmd: cmd,
+                left: coords1.0,
+                top: coords1.1,
+                right: coords2.0,
+                bottom: coords2.1,
+            },
+        ))
+    }
+
     match nom::combinator::all_consuming(parse_instruction_impl)(input) {
         Ok((_, instructions)) => instructions,
         Err(e) => panic!(format!("Failed to parse instructions: {:?}", e)),
@@ -139,17 +139,14 @@ mod tests {
         assert_eq!(Ok(("", Command::Toggle)), parse_command("toggle"));
 
         assert_eq!(
-            Ok((
-                "",
-                Instruction {
-                    cmd: Command::On,
-                    left: 0,
-                    top: 0,
-                    right: 999,
-                    bottom: 999
-                }
-            )),
-            parse_instruction_impl("turn on 0,0 through 999,999")
+            Instruction {
+                cmd: Command::On,
+                left: 0,
+                top: 0,
+                right: 999,
+                bottom: 999
+            },
+            parse_instruction("turn on 0,0 through 999,999")
         );
     }
 

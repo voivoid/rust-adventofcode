@@ -1,6 +1,5 @@
 type PosSet = std::collections::BTreeSet<Pos>;
 
-#[derive(Clone, Copy)]
 struct Step(isize, isize);
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -39,10 +38,9 @@ fn get_visited_locations(dirs: impl Iterator<Item = u8>) -> PosSet {
 }
 
 pub fn solve_a(input: impl std::io::BufRead) -> usize {
-    let results = input.lines().map(|line| {
-        let line = line.unwrap();
-        get_visited_locations(line.as_bytes().iter().copied()).len()
-    });
+    let results = input
+        .lines()
+        .map(|line| get_visited_locations(line.unwrap().as_bytes().iter().copied()).len());
 
     results.sum()
 }
