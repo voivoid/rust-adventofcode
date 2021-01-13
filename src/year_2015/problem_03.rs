@@ -55,8 +55,8 @@ pub fn solve_b(input: impl std::io::BufRead) -> usize {
             .enumerate()
             .partition(|(i, _)| i % 2 == 0);
 
-        let santa_visited = get_visited_locations(santa.iter().map(|(_, d)| d).copied());
-        let robot_visited = get_visited_locations(robot.iter().map(|(_, d)| d).copied());
+        let santa_visited = get_visited_locations(santa.iter().map(|(_, d)| *d));
+        let robot_visited = get_visited_locations(robot.iter().map(|(_, d)| *d));
 
         santa_visited.union(&robot_visited).count()
     });
