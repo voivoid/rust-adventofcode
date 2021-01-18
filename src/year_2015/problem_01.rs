@@ -6,11 +6,11 @@ fn direction_to_step(c: u8) -> isize {
     }
 }
 
-pub fn solve_a(input: impl std::io::BufRead) -> isize {
+pub fn solve_a<I: std::io::BufRead>(input: I) -> isize {
     input.bytes().map(|c| direction_to_step(c.unwrap())).sum()
 }
 
-pub fn solve_b(input: impl std::io::BufRead) -> usize {
+pub fn solve_b<I: std::io::BufRead>(input: I) -> usize {
     input
         .bytes()
         .scan(0, |state, c| {

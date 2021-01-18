@@ -80,12 +80,13 @@ fn solve(input: impl std::io::BufRead) -> Vec<usize> {
     let routes_map = make_routes_map(&routes);
     let cities = make_cities_set(&routes);
 
-    let combinations = cities
+    let all_distances = cities
         .iter()
         .permutations(cities.len())
-        .map(|c| calc_total_distance(&c, &routes_map));
+        .map(|cities_permutation| calc_total_distance(&cities_permutation, &routes_map))
+        .collect();
 
-    combinations.collect()
+    all_distances
 }
 
 pub fn solve_a(input: impl std::io::BufRead) -> usize {

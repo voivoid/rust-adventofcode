@@ -66,20 +66,22 @@ fn parse_instruction(input: &str) -> Instruction {
     }
 }
 
-fn apply_cmd_a(brightness: Brigthness, cmd: Command) -> Brigthness {
+type ChangeBrightness = fn(Brigthness) -> Brigthness;
+type ChangeBrightnessFactory = fn(Command) -> ChangeBrightness;
+
+fn change_brightness_factory_a(cmd: Command) -> ChangeBrightness {
     match cmd {
-        Command::On => 1,
-        Command::Off => 0,
-        Command::Toggle => (brightness + 1) % 2,
+        Command::On => |_| 1,
+        Command::Off => |_| 0,
+        Command::Toggle => |brightness| (brightness + 1) % 2,
     }
 }
 
-fn apply_cmd_b(brightness: Brigthness, cmd: Command) -> Brigthness {
+fn change_brightness_factory_b(cmd: Command) -> ChangeBrightness {
     match cmd {
-        Command::On => brightness + 1,
-        Command::Off if brightness == 0 => 0,
-        Command::Off => brightness - 1,
-        Command::Toggle => brightness + 2,
+        Command::On => |brightness| brightness + 1,
+        Command::Off => |brightness| if brightness != 0 { brightness - 1 } else { 0 },
+        Command::Toggle => |brightness| brightness + 2,
     }
 }
 
@@ -90,12 +92,13 @@ fn get_grid_brightness(grid: &mut Grid, x: Coord, y: Coord) -> &mut Brigthness {
 fn apply_instruction(
     mut grid: Grid,
     instruction: Instruction,
-    apply_cmd: fn(Brigthness, Command) -> Brigthness,
+    change_brightness_factory: ChangeBrightnessFactory,
 ) -> Grid {
+    let change_brightness = change_brightness_factory(instruction.cmd);
     for y in instruction.top..instruction.bottom + 1 {
         for x in instruction.left..instruction.right + 1 {
             let brightness = get_grid_brightness(&mut grid, x, y);
-            *brightness = apply_cmd(*brightness, instruction.cmd);
+            *brightness = change_brightness(*brightness);
         }
     }
 
@@ -108,24 +111,30 @@ fn make_initial_grid() -> Grid {
     grid
 }
 
-fn solve(input: impl std::io::BufRead, apply_cmd: fn(Brigthness, Command) -> Brigthness) -> usize {
+fn solve(
+    input: impl std::io::BufRead,
+    change_brightness_factory: ChangeBrightnessFactory,
+) -> usize {
     let instructions = input
         .lines()
         .map(|line| parse_instruction(line.unwrap().as_str()));
 
     let final_grid = instructions.fold(make_initial_grid(), |grid, instruction| {
-        apply_instruction(grid, instruction, apply_cmd)
+        apply_instruction(grid, instruction, change_brightness_factory)
     });
 
-    final_grid.iter().map(|b| b.to_usize()).sum()
+    final_grid
+        .iter()
+        .map(|brightness| brightness.to_usize())
+        .sum()
 }
 
 pub fn solve_a(input: impl std::io::BufRead) -> usize {
-    solve(input, apply_cmd_a)
+    solve(input, change_brightness_factory_a)
 }
 
 pub fn solve_b(input: impl std::io::BufRead) -> usize {
-    solve(input, apply_cmd_b)
+    solve(input, change_brightness_factory_b)
 }
 
 #[cfg(test)]

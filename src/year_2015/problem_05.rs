@@ -1,4 +1,4 @@
-static NAUGHTY: [&[u8; 2]; 4] = [b"ab", b"cd", b"pq", b"xy"];
+static NAUGHTY: [&[u8]; 4] = [b"ab", b"cd", b"pq", b"xy"];
 
 fn is_vowel(c: &u8) -> bool {
     let vowels = b"aeiou";
@@ -10,43 +10,29 @@ fn has_three_vowels(cs: &[u8]) -> bool {
 }
 
 fn has_letter_twice_in_a_row(cs: &[u8]) -> bool {
-    match cs {
-        [] => false,
-        [a, b, ..] if a == b => true,
-        [_, rest @ ..] => has_letter_twice_in_a_row(rest),
-    }
+    cs.windows(2).any(|w| match w {
+        [a, b] => a == b,
+        _ => false,
+    })
 }
 
 fn has_no_naughty_strings(cs: &[u8]) -> bool {
-    match cs {
-        [] => true,
-        [a, b, ..] if NAUGHTY.contains(&&[*a, *b]) => false,
-        [_, rest @ ..] => has_no_naughty_strings(rest),
-    }
+    cs.windows(2).all(|w| !NAUGHTY.contains(&w))
 }
 
 fn has_pair_of_letters_twice(cs: &[u8]) -> bool {
-    fn has_second_pair_of_letters(l1: &u8, l2: &u8, cs: &[u8]) -> bool {
-        match cs {
-            [] => false,
-            [a, b, ..] if a == l1 && b == l2 => true,
-            [_, rest @ ..] => has_second_pair_of_letters(l1, l2, rest),
-        }
-    }
-
     match cs {
         [] => false,
-        [a, b, rest @ ..] if has_second_pair_of_letters(a, b, rest) => true,
+        [a, b, rest @ ..] if rest.windows(2).any(|w| w == [*a, *b]) => true,
         [_, rest @ ..] => has_pair_of_letters_twice(rest),
     }
 }
 
 fn has_double_letter_with_a_letter_between(cs: &[u8]) -> bool {
-    match cs {
-        [] => false,
-        [a, _, c, ..] if a == c => true,
-        [_, rest @ ..] => has_double_letter_with_a_letter_between(rest),
-    }
+    cs.windows(3).any(|w| match w {
+        [a, _, c, ..] => a == c,
+        _ => false,
+    })
 }
 
 fn solve(input: impl std::io::BufRead, is_naughty: fn(&[u8]) -> bool) -> usize {

@@ -1,18 +1,18 @@
 use crate::utils::parsing::parse_decimal;
 use nom::character::complete::char;
 
-type DimT = u64;
+type Dim = u64;
 
 #[derive(Debug, PartialEq, Eq)]
-struct Dims(DimT, DimT, DimT);
+struct Dims(Dim, Dim, Dim);
 
 fn parse_dims(input: &str) -> Dims {
     fn parse_dims_impl(input: &str) -> nom::IResult<&str, Dims> {
-        let (input, length) = parse_decimal::<DimT>(input)?;
+        let (input, length) = parse_decimal::<Dim>(input)?;
         let (input, _) = char('x')(input)?;
-        let (input, width) = parse_decimal::<DimT>(input)?;
+        let (input, width) = parse_decimal::<Dim>(input)?;
         let (input, _) = char('x')(input)?;
-        let (input, height) = parse_decimal::<DimT>(input)?;
+        let (input, height) = parse_decimal::<Dim>(input)?;
 
         Ok((input, Dims(length, width, height)))
     }
@@ -23,15 +23,15 @@ fn parse_dims(input: &str) -> Dims {
     }
 }
 
-fn calc_area_a(Dims(l, w, h): Dims) -> DimT {
+fn calc_area_a(Dims(l, w, h): Dims) -> Dim {
     let sides = [l * w, w * h, h * l];
     let min_side = sides.iter().min().unwrap();
 
-    let box_area: DimT = sides.iter().map(|s| s * 2).sum();
+    let box_area: Dim = sides.iter().map(|s| s * 2).sum();
     box_area + min_side
 }
 
-fn calc_area_b(Dims(l, w, h): Dims) -> DimT {
+fn calc_area_b(Dims(l, w, h): Dims) -> Dim {
     let mut sides = [l, w, h];
     sides.sort();
 
@@ -41,7 +41,7 @@ fn calc_area_b(Dims(l, w, h): Dims) -> DimT {
     wrap_ribbon + bow_ribbon
 }
 
-fn solve(input: impl std::io::BufRead, calc_area: fn(Dims) -> DimT) -> DimT {
+fn solve(input: impl std::io::BufRead, calc_area: fn(Dims) -> Dim) -> Dim {
     input
         .lines()
         .map(|line| {
@@ -51,11 +51,11 @@ fn solve(input: impl std::io::BufRead, calc_area: fn(Dims) -> DimT) -> DimT {
         .sum()
 }
 
-pub fn solve_a(input: impl std::io::BufRead) -> DimT {
+pub fn solve_a(input: impl std::io::BufRead) -> Dim {
     solve(input, calc_area_a)
 }
 
-pub fn solve_b(input: impl std::io::BufRead) -> DimT {
+pub fn solve_b(input: impl std::io::BufRead) -> Dim {
     solve(input, calc_area_b)
 }
 

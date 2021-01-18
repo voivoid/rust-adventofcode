@@ -81,6 +81,11 @@ fn test_2015_10() {
 }
 
 #[test]
+fn test_2015_11() {
+    test_problems("2015/11", "hxbxxyzz", "hxcaabcc");
+}
+
+#[test]
 fn test_2020_01() {
     test_problems("2020/01", "744475", "70276940");
 }

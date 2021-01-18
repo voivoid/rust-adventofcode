@@ -40,7 +40,7 @@ fn get_visited_locations(dirs: impl Iterator<Item = u8>) -> PosSet {
 pub fn solve_a(input: impl std::io::BufRead) -> usize {
     let results = input
         .lines()
-        .map(|line| get_visited_locations(line.unwrap().as_bytes().iter().copied()).len());
+        .map(|line| get_visited_locations(line.unwrap().into_bytes().into_iter()).len());
 
     results.sum()
 }
@@ -49,14 +49,13 @@ pub fn solve_b(input: impl std::io::BufRead) -> usize {
     let results = input.lines().map(|line| {
         let line = line.unwrap();
         let (santa, robot): (Vec<_>, Vec<_>) = line
-            .as_bytes()
-            .iter()
-            .copied()
+            .into_bytes()
+            .into_iter()
             .enumerate()
             .partition(|(i, _)| i % 2 == 0);
 
-        let santa_visited = get_visited_locations(santa.iter().map(|(_, d)| *d));
-        let robot_visited = get_visited_locations(robot.iter().map(|(_, d)| *d));
+        let santa_visited = get_visited_locations(santa.into_iter().map(|(_, d)| d));
+        let robot_visited = get_visited_locations(robot.into_iter().map(|(_, d)| d));
 
         santa_visited.union(&robot_visited).count()
     });
