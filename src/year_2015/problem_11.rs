@@ -36,15 +36,15 @@ fn next_char(c: u8) -> u8 {
 }
 
 fn inc_password(mut password: Vec<u8>) -> Vec<u8> {
-    let mut iter = password.iter_mut().rev();
+    let mut chars_rev_iter = password.iter_mut().rev();
 
-    let carry = iter
+    let carry = chars_rev_iter
         .try_for_each(|c| match c {
             b'z' => {
                 *c = b'a';
                 Ok(())
             }
-            c => {
+            _ => {
                 *c = next_char(*c);
                 Err(())
             }
@@ -125,8 +125,14 @@ mod tests {
         assert_eq!(b"".to_vec(), remove_prohibited_letters(b"".to_vec()));
         assert_eq!(b"a".to_vec(), remove_prohibited_letters(b"a".to_vec()));
         assert_eq!(b"m".to_vec(), remove_prohibited_letters(b"l".to_vec()));
-        assert_eq!(b"paaa".to_vec(), remove_prohibited_letters(b"oabc".to_vec()));
-        assert_eq!(b"abcjaaa".to_vec(), remove_prohibited_letters(b"abcidef".to_vec()));
+        assert_eq!(
+            b"paaa".to_vec(),
+            remove_prohibited_letters(b"oabc".to_vec())
+        );
+        assert_eq!(
+            b"abcjaaa".to_vec(),
+            remove_prohibited_letters(b"abcidef".to_vec())
+        );
     }
 
     #[test]
