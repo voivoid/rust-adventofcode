@@ -51,6 +51,6 @@ mod tests {
 
     #[test]
     fn check_a() {
-        assert_eq!(6, super::solve("1".as_bytes(), 4));
+        assert_eq!(6, super::solve(&b"1"[..], 4));
     }
 }

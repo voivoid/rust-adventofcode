@@ -46,17 +46,17 @@ mod tests {
 
     #[test]
     fn check_a() {
-        assert_eq!(2, solve_a(r#""""#.as_bytes()));
-        assert_eq!(2, solve_a(r#""abc""#.as_bytes()));
-        assert_eq!(3, solve_a(r#""aaa\"aaa""#.as_bytes()));
-        assert_eq!(5, solve_a(r#""\x27""#.as_bytes()));
+        assert_eq!(2, solve_a(&br#""""#[..]));
+        assert_eq!(2, solve_a(&br#""abc""#[..]));
+        assert_eq!(3, solve_a(&br#""aaa\"aaa""#[..]));
+        assert_eq!(5, solve_a(&br#""\x27""#[..]));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(4, solve_b(r#""""#.as_bytes()));
-        assert_eq!(4, solve_b(r#""abc""#.as_bytes()));
-        assert_eq!(6, solve_b(r#""aaa\"aaa""#.as_bytes()));
-        assert_eq!(5, solve_b(r#""\x27""#.as_bytes()));
+        assert_eq!(4, solve_b(&br#""""#[..]));
+        assert_eq!(4, solve_b(&br#""abc""#[..]));
+        assert_eq!(6, solve_b(&br#""aaa\"aaa""#[..]));
+        assert_eq!(5, solve_b(&br#""\x27""#[..]));
     }
 }

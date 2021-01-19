@@ -70,13 +70,13 @@ mod tests {
 
     #[test]
     fn check_a() {
-        assert_eq!(58, solve_a("2x3x4".as_bytes()));
-        assert_eq!(43, solve_a("1x1x10".as_bytes()));
+        assert_eq!(58, solve_a(&b"2x3x4"[..]));
+        assert_eq!(43, solve_a(&b"1x1x10"[..]));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(34, solve_b("2x3x4".as_bytes()));
-        assert_eq!(14, solve_b("1x1x10".as_bytes()));
+        assert_eq!(34, solve_b(&b"2x3x4"[..]));
+        assert_eq!(14, solve_b(&b"1x1x10"[..]));
     }
 }

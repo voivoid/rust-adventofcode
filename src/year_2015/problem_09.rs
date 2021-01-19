@@ -118,8 +118,7 @@ mod tests {
         assert_eq!(
             605,
             solve_a(
-                "London to Dublin = 464\nLondon to Belfast = 518\nDublin to Belfast = 141"
-                    .as_bytes()
+                &b"London to Dublin = 464\nLondon to Belfast = 518\nDublin to Belfast = 141"[..]
             )
         );
     }

@@ -210,8 +210,8 @@ mod tests {
 
     #[test]
     fn check_a() {
-        let input = "123 -> x\n456 -> y\nx AND y -> d\nx OR y -> e\nx LSHIFT 2 -> f\ny RSHIFT 2 -> g\nNOT x -> h\nNOT y -> i";
-        let wiremap = parse_wiremap(input.as_bytes());
+        let input = b"123 -> x\n456 -> y\nx AND y -> d\nx OR y -> e\nx LSHIFT 2 -> f\ny RSHIFT 2 -> g\nNOT x -> h\nNOT y -> i";
+        let wiremap = parse_wiremap(&input[..]);
         let mut signal_cache = SignalCache::new();
 
         assert_eq!(

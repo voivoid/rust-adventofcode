@@ -31,20 +31,20 @@ mod tests {
 
     #[test]
     fn check_a() {
-        assert_eq!(0, solve_a("(())".as_bytes()));
-        assert_eq!(0, solve_a("()()".as_bytes()));
-        assert_eq!(3, solve_a("(((".as_bytes()));
-        assert_eq!(3, solve_a("(()(()(".as_bytes()));
-        assert_eq!(3, solve_a("))(((((".as_bytes()));
-        assert_eq!(-1, solve_a("())".as_bytes()));
-        assert_eq!(-1, solve_a("))(".as_bytes()));
-        assert_eq!(-3, solve_a(")))".as_bytes()));
-        assert_eq!(-3, solve_a(")())())".as_bytes()));
+        assert_eq!(0, solve_a(&b"(())"[..]));
+        assert_eq!(0, solve_a(&b"()()"[..]));
+        assert_eq!(3, solve_a(&b"((("[..]));
+        assert_eq!(3, solve_a(&b"(()(()("[..]));
+        assert_eq!(3, solve_a(&b"))((((("[..]));
+        assert_eq!(-1, solve_a(&b"())"[..]));
+        assert_eq!(-1, solve_a(&b"))("[..]));
+        assert_eq!(-3, solve_a(&b")))"[..]));
+        assert_eq!(-3, solve_a(&b")())())"[..]));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(1, solve_b(")".as_bytes()));
-        assert_eq!(5, solve_b("()())".as_bytes()));
+        assert_eq!(1, solve_b(&b")"[..]));
+        assert_eq!(5, solve_b(&b"()())"[..]));
     }
 }

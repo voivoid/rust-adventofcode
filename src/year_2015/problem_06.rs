@@ -161,21 +161,21 @@ mod tests {
 
     #[test]
     fn check_a() {
-        assert_eq!(4, solve_a("turn on 0,0 through 1,1".as_bytes()));
+        assert_eq!(4, solve_a(&b"turn on 0,0 through 1,1"[..]));
         assert_eq!(
             100 - 4,
-            solve_a("turn on 0,0 through 9,9\nturn off 4,4 through 5,5".as_bytes())
+            solve_a(&b"turn on 0,0 through 9,9\nturn off 4,4 through 5,5"[..])
         );
-        assert_eq!(10, solve_a("toggle 0,0 through 9,0".as_bytes()));
+        assert_eq!(10, solve_a(&b"toggle 0,0 through 9,0"[..]));
         assert_eq!(
             0,
-            solve_a("toggle 0,0 through 9,0\ntoggle 0,0 through 9,0".as_bytes())
+            solve_a(&b"toggle 0,0 through 9,0\ntoggle 0,0 through 9,0"[..])
         );
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(1, solve_b("turn on 0,0 through 0,0".as_bytes()));
-        assert_eq!(20, solve_b("toggle 0,0 through 9,0".as_bytes()));
+        assert_eq!(1, solve_b(&b"turn on 0,0 through 0,0"[..]));
+        assert_eq!(20, solve_b(&b"toggle 0,0 through 9,0"[..]));
     }
 }

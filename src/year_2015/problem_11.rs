@@ -137,7 +137,7 @@ mod tests {
 
     #[test]
     fn check_a() {
-        assert_eq!("abcdffaa", solve_a("abcdefgh".as_bytes()));
-        assert_eq!("ghjaabcc", solve_a("ghijklmn".as_bytes()));
+        assert_eq!("abcdffaa", solve_a(&b"abcdefgh"[..]));
+        assert_eq!("ghjaabcc", solve_a(&b"ghijklmn"[..]));
     }
 }

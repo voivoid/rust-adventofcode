@@ -90,18 +90,18 @@ mod tests {
 
     #[test]
     fn check_a() {
-        assert_eq!(1, solve_a("ugknbfddgicrmopn".as_bytes()));
-        assert_eq!(1, solve_a("aaa".as_bytes()));
-        assert_eq!(0, solve_a("jchzalrnumimnmhp".as_bytes()));
-        assert_eq!(0, solve_a("haegwjzuvuyypxyu".as_bytes()));
-        assert_eq!(0, solve_a("dvszwmarrgswjxmb".as_bytes()));
+        assert_eq!(1, solve_a(&b"ugknbfddgicrmopn"[..]));
+        assert_eq!(1, solve_a(&b"aaa"[..]));
+        assert_eq!(0, solve_a(&b"jchzalrnumimnmhp"[..]));
+        assert_eq!(0, solve_a(&b"haegwjzuvuyypxyu"[..]));
+        assert_eq!(0, solve_a(&b"dvszwmarrgswjxmb"[..]));
     }
 
     #[test]
     fn check_b() {
-        assert_eq!(1, solve_b("qjhvhtzxzqqjkmpb".as_bytes()));
-        assert_eq!(1, solve_b("xxyxx".as_bytes()));
-        assert_eq!(0, solve_b("uurcxstgmygtbstg".as_bytes()));
-        assert_eq!(0, solve_b("ieodomkazucvgmuy".as_bytes()));
+        assert_eq!(1, solve_b(&b"qjhvhtzxzqqjkmpb"[..]));
+        assert_eq!(1, solve_b(&b"xxyxx"[..]));
+        assert_eq!(0, solve_b(&b"uurcxstgmygtbstg"[..]));
+        assert_eq!(0, solve_b(&b"ieodomkazucvgmuy"[..]));
     }
 }
