@@ -4,9 +4,10 @@ use nom::{
 };
 
 pub fn parse_decimal<T: std::str::FromStr>(input: &str) -> nom::IResult<&str, T> {
-    map_res(take_while(|c: char| c.is_digit(10)), |s: &str| {
-        s.parse::<T>()
-    })(input)
+    map_res(
+        take_while(|c: char| c.is_digit(10) || c == '-'),
+        |s: &str| s.parse::<T>(),
+    )(input)
 }
 
 pub fn parse_str_alpha(input: &str) -> nom::IResult<&str, String> {
